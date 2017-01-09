@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER Fanlu <fanlu@jd.com>
 
-RUN apt-get update && apt-get install -y openssh-server build-essential git libopenblas-dev libopencv-dev graphviz supervisor vim wget unzip python-setuptools python-pip
+RUN apt-get update && apt-get install -y openssh-server build-essential git cmake libopenblas-dev libopencv-dev graphviz supervisor vim wget unzip python-setuptools python-pip
 RUN mkdir /var/run/sshd
 RUN echo 'root:screencast' | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -17,7 +17,7 @@ RUN groupadd -r admin && useradd -r -m -g admin admin && mkdir -p /export/App/wo
 # install the core library
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 # python pakcage
-RUN pip install numpy https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.12.0-cp27-none-linux_x86_64.whl matplotlib scikit-learn pandas graphviz bokeh keras jupyter
+RUN pip install numpy https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.12.0-cp27-none-linux_x86_64.whl matplotlib scikit-learn scikit-image pandas graphviz bokeh keras jupyter
 USER admin
 WORKDIR /export/App/work/
 RUN git clone --recursive https://github.com/dmlc/mxnet/ && cd mxnet && \
